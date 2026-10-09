@@ -1,0 +1,68 @@
+# TubeText
+
+TikTok Shop and AliExpress product data, plus YouTube and TikTok transcripts, for Dify workflows and agents. Each tool runs a TubeText Actor on [Apify](https://apify.com/tubetext) with your own Apify API token. You pay only for results; failed items are free.
+
+## Tools
+
+| Tool | What it returns | Apify Actor |
+|---|---|---|
+| TikTok Shop Products | US TikTok Shop data from product, store or category links: price and discount, items sold, rating and reviews, stock per SKU, shipping and shop stats. One product link returns one row. | [TikTok Shop Product Scraper](https://apify.com/tubetext/tiktok-shop-product-scraper) |
+| AliExpress Search | AliExpress search results for up to 20 keywords: price and discount, items sold, rating, ships-from country, free shipping and Choice badges. New-shopper deals and sponsored results are flagged and can be skipped. | [AliExpress Search Scraper](https://apify.com/tubetext/aliexpress-search-scraper) |
+| Video Transcript (YouTube & TikTok) | Transcripts of YouTube videos, Shorts, playlists and channels, and of TikTok videos (links can be mixed). Captions are used when available; turn on AI transcription to transcribe videos without captions with Whisper. | [YouTube Transcript Scraper](https://apify.com/tubetext/youtube-transcript-fast), [TikTok Transcript Scraper](https://apify.com/tubetext/tiktok-transcript) |
+| Get Run Results | The results of an earlier run by run ID, with paging | – |
+
+Limits worth knowing:
+- TikTok Shop Products needs links or product IDs. It doesn't search by keyword and covers the US store only.
+- AliExpress Search returns search-result data only, without product-page details or store names.
+
+## Setup
+
+1. Create an Apify account at [apify.com](https://apify.com). Copy your API token from **Apify Console > Settings > API & Integrations**.
+2. In Dify, install **TubeText** from the Marketplace.
+3. Open **Tools > TubeText > Authorize** and paste the token.
+
+## Usage
+
+**Workflow:** add a TubeText tool node and fill in the links or keywords, or map a variable. The `json` output contains:
+- `items`
+- `count`
+- `runs`, with each Apify run's `runId` and `runUrl`
+
+Video Transcript also returns the transcripts as `text`, ready for an LLM node.
+
+**Agent:** enable the TubeText tools in an agent app. Each tool tells the model when to use it. Example prompts:
+- "Get the transcript of this TikTok and tell me what the hook is: <link>"
+- "Summarize the latest videos on https://www.youtube.com/@3blue1brown" (how many is set by `Max Videos per Playlist or Channel` in the tool settings)
+- "Find yoga mats on AliExpress between $5 and $20, sorted by orders"
+- "How many units has this TikTok Shop product sold, and which variant has the most stock? <link>"
+
+**Output:** `Simplified` (the default) returns the most useful fields and keeps agent context small. `Full` returns every field the Actor produces.
+
+**Long runs:** each call waits up to `Max Wait` seconds (default 240). If a run takes longer, it keeps running on Apify and the tool returns its `runId`. Read the results later with **Get Run Results**.
+
+## Pricing
+
+The plugin itself is free. Runs are billed per result to your Apify account, at the price shown on each Actor's Apify Store page (Apify Free plan prices below; paid Apify plans pay less):
+- TikTok Shop: $4 per 1,000 products with full details, or $1.50 per 1,000 listing cards.
+- AliExpress: $2.50 per 1,000 products.
+- YouTube transcripts: $4 per 1,000.
+- TikTok transcripts: $3 per 1,000.
+- AI transcription: $0.006 per minute.
+
+Failed items aren't billed, and neither are removed products, YouTube videos without captions when AI transcription is off (`no_transcript`), or music-only TikTok videos. Apify's free plan includes monthly usage credit.
+
+## Connection requirements
+
+The plugin only calls `https://api.apify.com`. It doesn't log in to TikTok, AliExpress or YouTube, and it doesn't use cookies.
+
+## Errors
+
+- *Apify did not accept the API token*: the token is wrong or was revoked. Update it under **Tools > TubeText**.
+- *No remaining usage credit*: add credit or upgrade your Apify plan.
+- An item whose `status` isn't `ok` (for example a removed video or product) includes an `error` field explaining why.
+
+## Source code and support
+
+Source: https://github.com/LMSlay/dify-plugin-tubetext. Issues and questions are welcome there, or on any Actor's Apify Store page.
+
+Privacy: see [PRIVACY.md](PRIVACY.md).

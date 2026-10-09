@@ -1,0 +1,53 @@
+identity:
+  name: get_run_results
+  author: tubetext
+  label:
+    en_US: Get Run Results
+    zh_Hans: 获取运行结果
+description:
+  human:
+    en_US: "Read results of an earlier TubeText run by its run ID, with paging. Use it when a run took longer than 'Max Wait' or to read more items."
+    zh_Hans: "按 runId 读取之前某次 TubeText 运行的结果，支持分页。适用于运行超过最长等待时间，或需要读取更多结果。"
+  llm: "Reads the results of an earlier TubeText Apify run by its runId (returned by the other TubeText tools). Use it when a previous call said the run is still running, or to page through more items with offset and limit."
+parameters:
+  - name: run_id
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Run ID
+      zh_Hans: Run ID
+    human_description:
+      en_US: "The 'runId' returned by another TubeText tool."
+      zh_Hans: "其他 TubeText 工具返回的 runId。"
+    llm_description: "The runId value from an earlier TubeText tool result."
+  - name: limit
+    type: number
+    required: false
+    default: 100
+    min: 1
+    max: 10000
+    form: llm
+    label:
+      en_US: Limit
+      zh_Hans: 条数
+    human_description:
+      en_US: "Max number of items to return."
+      zh_Hans: "最多返回多少条。"
+    llm_description: "Max number of items to return (default 100)."
+  - name: offset
+    type: number
+    required: false
+    default: 0
+    min: 0
+    form: llm
+    label:
+      en_US: Offset
+      zh_Hans: 偏移
+    human_description:
+      en_US: "Number of items to skip, for paging."
+      zh_Hans: "跳过多少条，用于分页。"
+    llm_description: "Number of items to skip (default 0)."
+extra:
+  python:
+    source: tools/get_run_results.py

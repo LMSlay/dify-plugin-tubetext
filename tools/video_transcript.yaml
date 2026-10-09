@@ -1,0 +1,108 @@
+identity:
+  name: video_transcript
+  author: tubetext
+  label:
+    en_US: Video Transcript (YouTube & TikTok)
+    zh_Hans: 视频转文字（YouTube 和 TikTok）
+description:
+  human:
+    en_US: "Turn YouTube videos, Shorts, playlists, channels or TikTok videos into clean text with timestamps, using captions and Whisper AI when there are none."
+    zh_Hans: "把 YouTube 视频、Shorts、播放列表、频道或 TikTok 视频转成文字，带时间戳；有字幕就用字幕，没有就可以用 Whisper AI 转写。"
+  llm: "Use when the user wants the spoken content of YouTube or TikTok videos as text, e.g. to summarize, quote, translate or answer questions about a video. Input 'urls': one or more YouTube links (video, Shorts, playlist, or channel such as https://www.youtube.com/@name) or TikTok video links, comma- or newline-separated; both platforms can be mixed. For playlists and channels, the newest videos are transcribed up to the 'max_videos' limit set in the node (default 5). Optional 'languages': preferred caption language codes such as 'en' or 'es,en'. Returns title, author, language and transcript (plain text and optionally timestamped). Private, unavailable or music-only videos come back with a status instead of a transcript."
+parameters:
+  - name: urls
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Links
+      zh_Hans: 链接
+    human_description:
+      en_US: "YouTube video, Shorts, playlist or channel links, or TikTok video links. One per line (or comma separated). Up to 50."
+      zh_Hans: "YouTube 视频、Shorts、播放列表、频道链接，或 TikTok 视频链接。每行一个（或用逗号分隔），最多 50 个。"
+    llm_description: "YouTube and/or TikTok links separated by newlines or commas."
+    placeholder:
+      en_US: "e.g. https://www.youtube.com/watch?v=jNQXAC9IVRw"
+      zh_Hans: "例如 https://www.youtube.com/watch?v=jNQXAC9IVRw"
+  - name: languages
+    type: string
+    required: false
+    form: llm
+    label:
+      en_US: Languages
+      zh_Hans: 语言
+    human_description:
+      en_US: "Optional caption language codes in order of preference, e.g. en, es. YouTube defaults to en; TikTok defaults to the video's original language."
+      zh_Hans: "可选，按优先顺序填写字幕语言代码，例如 en, es。YouTube 默认 en；TikTok 默认用视频原语言。"
+    llm_description: "Optional comma-separated caption language codes in order of preference, e.g. 'en' or 'es,en'."
+  - name: max_videos
+    type: number
+    required: false
+    default: 5
+    min: 1
+    max: 100
+    form: form
+    label:
+      en_US: Max Videos per Playlist or Channel
+      zh_Hans: 每个播放列表/频道最多视频数
+    human_description:
+      en_US: "For YouTube playlist and channel links: how many of the newest videos to transcribe. Each transcript is billed per result to your Apify account."
+      zh_Hans: "YouTube 播放列表和频道链接取最新的多少条视频。每条文字稿按结果计费到你的 Apify 账户。"
+  - name: ai_transcription
+    type: boolean
+    required: false
+    default: false
+    form: form
+    label:
+      en_US: AI Transcription
+      zh_Hans: AI 转写
+    human_description:
+      en_US: "Whether to transcribe videos without captions with Whisper AI. Billed per audio minute, only when speech is transcribed."
+      zh_Hans: "没有字幕的视频是否用 Whisper AI 转写。按音频分钟计费，只有成功转写才收费。"
+  - name: timestamps
+    type: boolean
+    required: false
+    default: true
+    form: form
+    label:
+      en_US: Timestamps
+      zh_Hans: 时间戳
+    human_description:
+      en_US: "Whether to add a 'timestampedText' field with one [mm:ss] line per caption."
+      zh_Hans: "是否增加 timestampedText 字段（每句前带 [mm:ss]）。"
+  - name: output
+    type: select
+    required: false
+    default: simplified
+    form: form
+    label:
+      en_US: Output
+      zh_Hans: 输出字段
+    human_description:
+      en_US: "Simplified returns the most useful fields only (best for AI agents). Full returns every field the Actor produces."
+      zh_Hans: "精简：只返回最常用的字段（适合 AI Agent）；完整：返回 Actor 的全部字段。"
+    options:
+      - value: simplified
+        label:
+          en_US: Simplified
+          zh_Hans: 精简
+      - value: full
+        label:
+          en_US: Full
+          zh_Hans: 完整
+  - name: max_wait_seconds
+    type: number
+    required: false
+    default: 240
+    min: 30
+    max: 600
+    form: form
+    label:
+      en_US: Max Wait (Seconds)
+      zh_Hans: 最长等待（秒）
+    human_description:
+      en_US: "How long to wait for the Apify run. If it takes longer, the run keeps going on Apify and you get its run ID to fetch results later with 'Get Run Results'."
+      zh_Hans: "等待 Apify 运行完成的最长时间。超时后运行会在 Apify 上继续，返回 runId，之后可用「获取运行结果」工具取结果。"
+extra:
+  python:
+    source: tools/video_transcript.py

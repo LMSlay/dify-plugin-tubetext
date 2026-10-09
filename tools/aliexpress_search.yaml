@@ -1,0 +1,238 @@
+identity:
+  name: aliexpress_search
+  author: tubetext
+  label:
+    en_US: AliExpress Search
+    zh_Hans: AliExpress 搜索
+description:
+  human:
+    en_US: "Search AliExpress by keyword: price, discount, items sold, rating, ships-from, free shipping and new-shopper deal flags, for many ship-to countries and currencies."
+    zh_Hans: "按关键词搜索 AliExpress：价格、折扣、销量、评分、发货地、是否包邮和新人价标识，可选收货国家和币种。"
+  llm: "Use when the user wants to find or compare products on AliExpress by keyword (product research, dropshipping, supplier price checks). Input 'keywords': one or more search terms (any language), one per line. Optional: sort_by (best_match, orders, price_asc, price_desc), min_price, max_price (in the selected currency). Ship-to country, currency and the number of results are set by the user in the node. New-shopper deals (one-time welcome prices) are skipped by default so prices reflect what regular buyers pay. Returns search-result data only (no product-page details, no store names)."
+parameters:
+  - name: keywords
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Keywords
+      zh_Hans: 关键词
+    human_description:
+      en_US: "Search terms, one per line. Up to 20."
+      zh_Hans: "搜索词，每行一个，最多 20 个。"
+    llm_description: "One or more AliExpress search terms in any language, separated by newlines (not commas), e.g. 'yoga mat'."
+    placeholder:
+      en_US: "e.g. yoga mat"
+      zh_Hans: "例如 yoga mat"
+  - name: max_items_per_keyword
+    type: number
+    required: false
+    default: 20
+    min: 1
+    max: 300
+    form: form
+    label:
+      en_US: Max Products per Keyword
+      zh_Hans: 每个关键词最多商品数
+    human_description:
+      en_US: "AliExpress shows 60 products per page. Each product is billed by the Actor."
+      zh_Hans: "AliExpress 每页 60 个商品，每个商品按 Actor 价格计费。"
+  - name: sort_by
+    type: select
+    required: false
+    default: best_match
+    form: llm
+    label:
+      en_US: Sort By
+      zh_Hans: 排序
+    human_description:
+      en_US: "Result order on AliExpress."
+      zh_Hans: "AliExpress 上的结果排序。"
+    llm_description: "Result order: best_match, orders (most sold), price_asc or price_desc."
+    options:
+      - value: best_match
+        label: {en_US: Best Match, zh_Hans: 综合}
+      - value: orders
+        label: {en_US: Orders, zh_Hans: 销量}
+      - value: price_asc
+        label: {en_US: Price (Low to High), zh_Hans: 价格从低到高}
+      - value: price_desc
+        label: {en_US: Price (High to Low), zh_Hans: 价格从高到低}
+  - name: min_price
+    type: number
+    required: false
+    form: llm
+    label:
+      en_US: Min Price
+      zh_Hans: 最低价
+    human_description:
+      en_US: "Optional, in the selected currency."
+      zh_Hans: "可选，单位为所选货币。"
+    llm_description: "Optional minimum price in the selected currency."
+  - name: max_price
+    type: number
+    required: false
+    form: llm
+    label:
+      en_US: Max Price
+      zh_Hans: 最高价
+    human_description:
+      en_US: "Optional, in the selected currency."
+      zh_Hans: "可选，单位为所选货币。"
+    llm_description: "Optional maximum price in the selected currency."
+  - name: ship_to
+    type: select
+    required: false
+    default: US
+    form: form
+    label:
+      en_US: Ship To
+      zh_Hans: 配送到
+    human_description:
+      en_US: "Prices, shipping and local warehouses depend on the destination."
+      zh_Hans: "价格、运费和海外仓取决于目的地。"
+    options:
+      - value: US
+        label: {en_US: US, zh_Hans: US}
+      - value: GB
+        label: {en_US: GB, zh_Hans: GB}
+      - value: DE
+        label: {en_US: DE, zh_Hans: DE}
+      - value: FR
+        label: {en_US: FR, zh_Hans: FR}
+      - value: ES
+        label: {en_US: ES, zh_Hans: ES}
+      - value: IT
+        label: {en_US: IT, zh_Hans: IT}
+      - value: NL
+        label: {en_US: NL, zh_Hans: NL}
+      - value: PL
+        label: {en_US: PL, zh_Hans: PL}
+      - value: BE
+        label: {en_US: BE, zh_Hans: BE}
+      - value: SE
+        label: {en_US: SE, zh_Hans: SE}
+      - value: CA
+        label: {en_US: CA, zh_Hans: CA}
+      - value: AU
+        label: {en_US: AU, zh_Hans: AU}
+      - value: BR
+        label: {en_US: BR, zh_Hans: BR}
+      - value: MX
+        label: {en_US: MX, zh_Hans: MX}
+      - value: KR
+        label: {en_US: KR, zh_Hans: KR}
+      - value: JP
+        label: {en_US: JP, zh_Hans: JP}
+      - value: IL
+        label: {en_US: IL, zh_Hans: IL}
+      - value: SA
+        label: {en_US: SA, zh_Hans: SA}
+      - value: AE
+        label: {en_US: AE, zh_Hans: AE}
+      - value: TR
+        label: {en_US: TR, zh_Hans: TR}
+      - value: CL
+        label: {en_US: CL, zh_Hans: CL}
+  - name: currency
+    type: select
+    required: false
+    default: USD
+    form: form
+    label:
+      en_US: Currency
+      zh_Hans: 货币
+    human_description:
+      en_US: "Currency for prices."
+      zh_Hans: "价格使用的货币。"
+    options:
+      - value: USD
+        label: {en_US: USD, zh_Hans: USD}
+      - value: EUR
+        label: {en_US: EUR, zh_Hans: EUR}
+      - value: GBP
+        label: {en_US: GBP, zh_Hans: GBP}
+      - value: CAD
+        label: {en_US: CAD, zh_Hans: CAD}
+      - value: AUD
+        label: {en_US: AUD, zh_Hans: AUD}
+      - value: BRL
+        label: {en_US: BRL, zh_Hans: BRL}
+      - value: MXN
+        label: {en_US: MXN, zh_Hans: MXN}
+      - value: KRW
+        label: {en_US: KRW, zh_Hans: KRW}
+      - value: JPY
+        label: {en_US: JPY, zh_Hans: JPY}
+      - value: PLN
+        label: {en_US: PLN, zh_Hans: PLN}
+      - value: SEK
+        label: {en_US: SEK, zh_Hans: SEK}
+      - value: ILS
+        label: {en_US: ILS, zh_Hans: ILS}
+      - value: SAR
+        label: {en_US: SAR, zh_Hans: SAR}
+      - value: AED
+        label: {en_US: AED, zh_Hans: AED}
+      - value: TRY
+        label: {en_US: TRY, zh_Hans: TRY}
+      - value: CLP
+        label: {en_US: CLP, zh_Hans: CLP}
+  - name: skip_sponsored
+    type: boolean
+    required: false
+    default: false
+    form: form
+    label:
+      en_US: Skip Sponsored
+      zh_Hans: 跳过广告
+    human_description:
+      en_US: "Whether to keep organic results only. About 1 in 4 AliExpress results is an ad."
+      zh_Hans: "是否只保留自然结果。AliExpress 结果里大约 1/4 是广告。"
+  - name: skip_new_shopper_deals
+    type: boolean
+    required: false
+    default: true
+    form: form
+    label:
+      en_US: Skip New-Shopper Deals
+      zh_Hans: 跳过新人价
+    human_description:
+      en_US: "Whether to leave out one-time welcome prices for new AliExpress customers, which regular buyers don't get."
+      zh_Hans: "是否排除只给 AliExpress 新用户的一次性新人价（老用户拿不到）。"
+  - name: output
+    type: select
+    required: false
+    default: simplified
+    form: form
+    label:
+      en_US: Output
+      zh_Hans: 输出字段
+    human_description:
+      en_US: "Simplified returns the most useful fields only (best for AI agents). Full returns every field the Actor produces."
+      zh_Hans: "精简：只返回最常用的字段（适合 AI Agent）；完整：返回 Actor 的全部字段。"
+    options:
+      - value: simplified
+        label:
+          en_US: Simplified
+          zh_Hans: 精简
+      - value: full
+        label:
+          en_US: Full
+          zh_Hans: 完整
+  - name: max_wait_seconds
+    type: number
+    required: false
+    default: 240
+    min: 30
+    max: 600
+    form: form
+    label:
+      en_US: Max Wait (Seconds)
+      zh_Hans: 最长等待（秒）
+    human_description:
+      en_US: "How long to wait for the Apify run. If it takes longer, the run keeps going on Apify and you get its run ID to fetch results later with 'Get Run Results'."
+      zh_Hans: "等待 Apify 运行完成的最长时间。超时后运行会在 Apify 上继续，返回 runId，之后可用「获取运行结果」工具取结果。"
+extra:
+  python:
+    source: tools/aliexpress_search.py

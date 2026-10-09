@@ -1,0 +1,97 @@
+identity:
+  name: tiktok_shop_products
+  author: tubetext
+  label:
+    en_US: TikTok Shop Products
+    zh_Hans: TikTok Shop 商品数据
+description:
+  human:
+    en_US: "Get US TikTok Shop product data from product, store or category links: price, discount, items sold, rating, stock per SKU and shop stats."
+    zh_Hans: "从商品、店铺或类目链接获取美国 TikTok Shop 的商品数据：价格、折扣、销量、评分、每个规格的库存和店铺数据。"
+  llm: "Use when the user wants data about specific US TikTok Shop products, a TikTok Shop store, or a TikTok Shop category page (price, items sold, rating, reviews, stock per variant, shop followers). Input 'urls': one or more links (tiktok.com/shop/pdp/<id>, shop.tiktok.com/view/product/<id>, tiktok.com/shop/store/<name>/<id>, tiktok.com/shop/c/<name>/<id>) or numeric product IDs, comma- or newline-separated. Store pages return their first 20 products; category pages return a sample. US shop only. It cannot search TikTok Shop by keyword: if the user only gives a keyword, ask for a product, store or category link."
+parameters:
+  - name: urls
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Links
+      zh_Hans: 链接
+    human_description:
+      en_US: "Product, store or category links, or product IDs. One per line (or comma separated). Up to 100."
+      zh_Hans: "商品、店铺或类目链接，或商品 ID。每行一个（或用逗号分隔），最多 100 个。"
+    llm_description: "TikTok Shop US links or numeric product IDs, separated by newlines or commas. Product pages, store pages and category pages are accepted."
+    placeholder:
+      en_US: "e.g. https://www.tiktok.com/shop/pdp/1729527313880355335"
+      zh_Hans: "例如 https://www.tiktok.com/shop/pdp/1729527313880355335"
+  - name: include_details
+    type: boolean
+    required: false
+    default: true
+    form: form
+    label:
+      en_US: Include Details
+      zh_Hans: 包含详情
+    human_description:
+      en_US: "Whether to get full details (SKUs, stock, specs, shop stats) for products found on store or category pages. Off returns listing cards only, which costs less."
+      zh_Hans: "是否获取完整详情（规格、库存、参数、店铺数据）；关闭则只返回列表卡片，更便宜。"
+  - name: include_reviews
+    type: boolean
+    required: false
+    default: false
+    form: form
+    label:
+      en_US: Include Reviews
+      zh_Hans: 包含评论
+    human_description:
+      en_US: "Whether to add the reviews shown on the product page (rating, text, date, variant). Reviewer names and IDs are never collected."
+      zh_Hans: "是否附带商品页上显示的评论（评分、内容、日期、规格）。不采集评论者姓名和 ID。"
+  - name: max_products_per_listing
+    type: number
+    required: false
+    default: 20
+    min: 1
+    max: 200
+    form: form
+    label:
+      en_US: Max Products per Store or Category
+      zh_Hans: 每个店铺/类目最多商品数
+    human_description:
+      en_US: "Store pages give their first 20 products. Category pages are sampled several times to collect more."
+      zh_Hans: "店铺页最多返回前 20 个商品；类目页会多次采样以获取更多。"
+  - name: output
+    type: select
+    required: false
+    default: simplified
+    form: form
+    label:
+      en_US: Output
+      zh_Hans: 输出字段
+    human_description:
+      en_US: "Simplified returns the most useful fields only (best for AI agents). Full returns every field the Actor produces."
+      zh_Hans: "精简：只返回最常用的字段（适合 AI Agent）；完整：返回 Actor 的全部字段。"
+    options:
+      - value: simplified
+        label:
+          en_US: Simplified
+          zh_Hans: 精简
+      - value: full
+        label:
+          en_US: Full
+          zh_Hans: 完整
+  - name: max_wait_seconds
+    type: number
+    required: false
+    default: 240
+    min: 30
+    max: 600
+    form: form
+    label:
+      en_US: Max Wait (Seconds)
+      zh_Hans: 最长等待（秒）
+    human_description:
+      en_US: "How long to wait for the Apify run. If it takes longer, the run keeps going on Apify and you get its run ID to fetch results later with 'Get Run Results'."
+      zh_Hans: "等待 Apify 运行完成的最长时间。超时后运行会在 Apify 上继续，返回 runId，之后可用「获取运行结果」工具取结果。"
+extra:
+  python:
+    source: tools/tiktok_shop_products.py

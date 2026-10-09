@@ -1,0 +1,38 @@
+version: 0.1.0
+type: plugin
+author: tubetext
+name: tubetext
+label:
+  en_US: TubeText
+  zh_Hans: TubeText
+  ja_JP: TubeText
+description:
+  en_US: TikTok Shop & AliExpress product data and YouTube/TikTok transcripts via Apify.
+  zh_Hans: TikTok Shop 和 AliExpress 商品数据，以及 YouTube/TikTok 视频转文字，通过 Apify 运行。
+  ja_JP: TikTok Shop・AliExpress の商品データと YouTube/TikTok の文字起こし（Apify 経由）。
+icon: icon.svg
+icon_dark: icon-dark.svg
+resource:
+  memory: 268435456
+  permission: {}
+plugins:
+  tools:
+    - provider/tubetext.yaml
+meta:
+  version: 0.1.0
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+  minimum_dify_version: 1.10.0
+created_at: 2026-10-08T23:48:36.182647-07:00
+privacy: PRIVACY.md
+repo: https://github.com/LMSlay/dify-plugin-tubetext
+contact: whitehatslay@gmail.com
+network:
+  domains:
+    - api.apify.com
+verified: false

@@ -1,0 +1,39 @@
+identity:
+  author: tubetext
+  name: tubetext
+  label:
+    en_US: TubeText
+    zh_Hans: TubeText
+    ja_JP: TubeText
+  description:
+    en_US: "TikTok Shop & AliExpress product data and YouTube/TikTok transcripts via Apify."
+    zh_Hans: "TikTok Shop 和 AliExpress 商品数据，以及 YouTube/TikTok 视频转文字，通过 Apify 运行。"
+    ja_JP: "TikTok Shop・AliExpress の商品データと YouTube/TikTok の文字起こし（Apify 経由）。"
+  icon: icon.svg
+  icon_dark: icon-dark.svg
+  tags:
+    - business
+    - search
+    - videos
+credentials_for_provider:
+  apify_api_token:
+    type: secret-input
+    required: true
+    label:
+      en_US: Apify API Token
+      zh_Hans: Apify API Token
+    placeholder:
+      en_US: "e.g. apify_api_..."
+      zh_Hans: "例如 apify_api_..."
+    help:
+      en_US: "Your Apify API token (Console → Settings → API & Integrations). Runs are billed per result to your Apify account; Apify's free plan includes monthly credit."
+      zh_Hans: "你的 Apify API token（Console → Settings → API & Integrations）。按结果计费到你的 Apify 账户；Apify 免费套餐每月有赠送额度。"
+    url: https://console.apify.com/settings/integrations
+tools:
+  - tools/tiktok_shop_products.yaml
+  - tools/aliexpress_search.yaml
+  - tools/video_transcript.yaml
+  - tools/get_run_results.yaml
+extra:
+  python:
+    source: provider/tubetext.py
