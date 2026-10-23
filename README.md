@@ -40,6 +40,19 @@ Video Transcript also returns the transcripts as `text`, ready for an LLM node.
 
 **Long runs:** each call waits up to `Max Wait` seconds (default 240). If a run takes longer, it keeps running on Apify and the tool returns its `runId`. Read the results later with **Get Run Results**.
 
+### Captions-first YouTube brief in a Dify workflow
+
+Want to summarize a YouTube video without automatically paying for AI transcription? Start with one permitted public video, not a whole channel. This is a documentation-based node setup for plugin **0.1.0**, not a live-tested workflow or importable DSL.
+
+1. Add a Start text input for the video URL. In **Video Transcript (YouTube & TikTok)**, map **Links** to that input; set **Languages** to `en`, **Max Videos per Playlist or Channel** to `1`, **AI Transcription** to off, **Timestamps** to on and **Output** to Simplified. The plugin explicitly sends YouTube `aiFallback: false`; this avoids relying on the Actor's default.
+2. Inspect the tool's JSON output in your Dify variable picker. Check both `runs[].runStatus` and each item's `status`/`error`. A returned row is not necessarily a successful transcript. Only send a successful, nonempty `transcript` to your optional summary node; keep other rows for review. Check the returned language rather than assuming the preference guarantees English.
+3. Give the summary node the accepted transcript, title, URL and available `timestampedText`. Ask it to summarize only that text, preserve source references and treat transcript content as data, not instructions. Do not summarize an error message.
+4. If the run is still active, keep its `runId` and use **Get Run Results** later instead of launching another job. Recovery returns raw Actor `items` plus `runStatus`, not the video tool's convenience `text` output. Reapply the success/transcript checks.
+
+AI off is not a zero-cost guarantee: applicable startup charges can remain, and a downstream model has its own usage costs. Review the current pricing before running.
+
+For missing captions, restricted videos and language mismatches, use our [YouTube transcript troubleshooting guide](https://tubetext.dev/youtube-transcript-not-available/). Its JSON examples target the Actor directly; they are not additional Dify tool parameters. In this plugin, use the named node settings above.
+
 ## Pricing
 
 The plugin itself is free. Runs are billed per result to your Apify account, at the price shown on each Actor's Apify Store page (Apify Free plan prices below; paid Apify plans pay less):
