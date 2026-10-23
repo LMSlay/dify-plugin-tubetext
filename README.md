@@ -1,6 +1,6 @@
 # TubeText
 
-TikTok Shop and AliExpress product data, plus YouTube and TikTok transcripts, for Dify workflows and agents. Each tool runs a TubeText Actor on [Apify](https://apify.com/tubetext) with your own Apify API token. You pay only for results; failed items are free.
+TikTok Shop and AliExpress product data, plus YouTube and TikTok transcripts, for Dify workflows and agents. Each tool runs a TubeText Actor on [Apify](https://apify.com/tubetext) with your own Apify API token. Failed items do not incur the corresponding result fee; Actor startup and other applicable charges may still apply. See each Actor's current Pricing tab.
 
 ## Tools
 
@@ -46,10 +46,10 @@ The plugin itself is free. Runs are billed per result to your Apify account, at 
 - TikTok Shop: $4 per 1,000 products with full details, or $1.50 per 1,000 listing cards.
 - AliExpress: $2.50 per 1,000 products.
 - YouTube transcripts: $4 per 1,000.
-- TikTok transcripts: $3 per 1,000.
+- TikTok transcripts: see the [current Pricing tab](https://apify.com/tubetext/tiktok-transcript/pricing).
 - AI transcription: $0.006 per minute.
 
-Failed items aren't billed, and neither are removed products, YouTube videos without captions when AI transcription is off (`no_transcript`), or music-only TikTok videos. Apify's free plan includes monthly usage credit.
+Failed items, removed products, YouTube videos without captions when AI transcription is off (`no_transcript`), and music-only TikTok videos do not incur the corresponding result fee. This does not make the entire run free: Actor startup and other applicable charges may still apply under the selected Actor's current Pricing tab. Apify's free plan includes monthly usage credit.
 
 ## Connection requirements
 
